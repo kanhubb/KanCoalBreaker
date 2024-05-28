@@ -1,13 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 public class Brick : MonoBehaviour
 {
+    public int resistance;  // Niveau de résistance actuel de la brique
+    private int initialResistance;  // Niveau de résistance initial de la brique
+    public int pointsPerResistance = 100;  // Points gagnés par niveau de résistance
 
-    public int resistance;
     public void SetResistance(int level)
     {
         resistance = level;
+        initialResistance = level;  // Stocker le niveau de résistance initial
+        UpdateColor();
+    }
+
+    void UpdateColor()
+    {
         // Modifier la couleur ou d'autres propriétés en fonction de la résistance
         switch (resistance)
         {
@@ -21,5 +28,25 @@ public class Brick : MonoBehaviour
                 GetComponent<Renderer>().material.color = Color.red;
                 break;
         }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ball"))  // Assurez-vous que l'objet qui entre en collision est la balle
+        {
+            resistance--;
+            UpdateColor();  // Mise à jour de la couleur à chaque changement de résistance
+            if (resistance <= 0)
+            {
+                DestroyBrick();
+            }
+        }
+    }
+
+    void DestroyBrick()
+    {
+        GameManager.Instance.AddScore(initialResistance * pointsPerResistance);  // Utiliser la résistance initiale pour le calcul des points
+        Debug.Log("Brick destroyed! Points awarded: " + initialResistance * pointsPerResistance);
+        Destroy(gameObject);  // Détruire l'objet brique
     }
 }
