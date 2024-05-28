@@ -4,8 +4,10 @@ public class BallController : MonoBehaviour
 {
     private Rigidbody rb;
     public GameObject plateau; // Assigner ce champ dans l'éditeur Unity
-    public float angleVariance = 30f; // Définir la variance de l'angle en degrés
-    public float constantSpeed = 10f; // Vitesse constante de la bille
+    public float angleVariance = 0.5f; // Définir la variance de l'angle en degrés
+    public float speed = 10f; // Vitesse constante de la bille
+
+    private bool isLaunched = false;
 
     void Start()
     {
@@ -15,16 +17,20 @@ public class BallController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rb.velocity = Vector3.forward * constantSpeed;
-            Debug.Log("La bille a été lancée !");
+        if(!isLaunched){
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                isLaunched = true;
+                rb.velocity = -Vector3.forward * speed;
+                Debug.Log("La bille a été lancée !");
+            }
         }
     }
-
     void FixedUpdate()
     {
-            rb.velocity = rb.velocity.normalized * constantSpeed;
+        if (isLaunched){
+            rb.velocity = rb.velocity.normalized * speed;
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -33,10 +39,10 @@ public class BallController : MonoBehaviour
         if (collision.gameObject != plateau)
         {
             Debug.Log("La bille a touché un objet autre que le plateau.");
-            // Ajout d'une variation aléatoire à l'angle de rebond
-            float angle = Random.Range(-angleVariance, angleVariance);
-            Vector3 newForceDirection = new Vector3(angle, 0, angle) * constantSpeed;
-            rb.velocity = newForceDirection;
+            // Calcul de la r�flexion bas�e sur la normale de la collision
+            Vector3 reflectDirection = Vector3.Reflect(rb.velocity.normalized, collision.contacts[0].normal);
+            reflectDirection = new Vector3(reflectDirection.x + Random.Range(-angleVariance, angleVariance),reflectDirection.y,reflectDirection.z + Random.Range(-angleVariance, angleVariance));
+            rb.velocity = reflectDirection * speed;
         }
     }
 }
