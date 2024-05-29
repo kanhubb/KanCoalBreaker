@@ -24,6 +24,10 @@ public class Boutton : MonoBehaviour
     {
         SceneManager.LoadScene("BestScoreScene");
     }
+            public void BtnBackMenu()
+    {
+        SceneManager.LoadScene("KanMenu");
+    }
     public void BtnQuit()
     {
         Application.Quit();

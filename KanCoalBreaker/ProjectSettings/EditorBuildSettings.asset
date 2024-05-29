@@ -12,9 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/GameScene.unity
     guid: f8e933cfeea3d034b8bf3e906ac5e503
   - enabled: 1
-    path: Assets/Scenes/BestScoreScen.unity
-    guid: 3bf63d7aacc29d348a1686b204b7827f
-  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/BestScoreScene.unity
+    guid: 1d5227ada7d898a46848792af3ba260b
   m_configObjects: {}
