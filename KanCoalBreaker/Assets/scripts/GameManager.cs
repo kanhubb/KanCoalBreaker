@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+
 using TMPro;
 
 public class GameManager : MonoBehaviour
@@ -6,6 +8,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timerText;
+
+    public TextMeshProUGUI BonusText;
+
     public GameObject ball;
     public SaveScore saveScoreScript; 
     public GenerateBrickPattern brickPatternGenerator;
@@ -67,6 +72,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("You Win!");
         gameActive = false;
         ballController.StopBall();
+        BonusText.gameObject.SetActive(false);
         saveScoreScript.ActivateEndGamePanel(true);
     }
 
@@ -75,6 +81,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Over!");
         gameActive = false;
         ballController.StopBall();
+        BonusText.gameObject.SetActive(false);
         saveScoreScript.ActivateEndGamePanel(false);
     }
 
@@ -92,6 +99,24 @@ public class GameManager : MonoBehaviour
             brickPatternGenerator.GenerateBricks();
         }
         UpdateScoreText();
+    }
+        public void ApplyEffect(string effect)
+    {
+        if (BonusText != null)
+        {
+            BonusText.text = $"Effect Applied: {effect}";
+            BonusText.gameObject.SetActive(true);
+            StartCoroutine(HideEffectDisplayAfterTime(2)); // Démarrer la coroutine ici
+        }
+    }
+
+    IEnumerator HideEffectDisplayAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        if (BonusText != null)
+        {
+            BonusText.gameObject.SetActive(false);
+        }
     }
 
     void UpdateScoreText()

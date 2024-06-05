@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3783447, y: 1, z: 0.6499219}
+  m_LocalScale: {x: 1.24, y: 1.62, z: 0.69}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -118,4 +118,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab3c235772d469c4d80665d0e9da089f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resistanceMaterials:
+  - {fileID: 2100000, guid: 716ab0972e30ccc41bba4f96a29b6a3c, type: 2}
+  - {fileID: 2100000, guid: c2fd93a8b4e81ec4aa5e3e751ecbc4c0, type: 2}
+  - {fileID: 2100000, guid: b248dd262ae911d4d8d6a22ab0659242, type: 2}
+  bonusMaterial: {fileID: 2100000, guid: 28d111aeadb08b14783694a866c47962, type: 2}
+  malusMaterial: {fileID: 2100000, guid: 365eb75086f28714fbb5b37ddd3b63f5, type: 2}
+  brickType: 0
+  effect: 
   resistance: 0
+  pointsPerResistance: 100

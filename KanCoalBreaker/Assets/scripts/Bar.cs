@@ -42,4 +42,14 @@ public class Bar : MonoBehaviour
         var xPos = Mathf.Clamp(transform.position.x,-9.34f,9.34f);
         transform.position = new Vector3(xPos, transform.position.y, transform.position.z);
     }
+    public void EnlargePaddle()
+    {
+        transform.localScale = new Vector3(transform.localScale.x , transform.localScale.y* 1.5f, transform.localScale.z);
+    }
+
+    public void ShrinkPaddle()
+    {
+        transform.localScale = new Vector3(transform.localScale.x , transform.localScale.y* 0.5f, transform.localScale.z);
+    }
+
 }
