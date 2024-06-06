@@ -51,5 +51,13 @@ public class Bar : MonoBehaviour
     {
         transform.localScale = new Vector3(transform.localScale.x , transform.localScale.y* 0.5f, transform.localScale.z);
     }
+    public void speedUp()
+    {
+        speed = speed * 1.5f;
+    }
+    public void slowDown()
+    {
+        speed = speed * 0.8f;
+    }
 
 }

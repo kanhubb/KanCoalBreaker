@@ -40,7 +40,7 @@ public class BestScores : MonoBehaviour
         })
         .OrderByDescending(score => score.Score) // Trie les scores par ordre décroissant
         .Take(5) // Prend les 5 meilleurs scores
-        .Select(score => $"{score.Name} - {score.Score}") // Formatte pour l'affichage
+        .Select(score => $"{score.Name} : {score.Score}") // Formatte pour l'affichage
         .ToList();
     }
 }

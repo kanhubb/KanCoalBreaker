@@ -45,22 +45,33 @@ public class GenerateBrickPattern : MonoBehaviour
                     GameObject newBrick = Instantiate(brickPrefab, position, Quaternion.identity, transform);
                     Brick brickComponent = newBrick.GetComponent<Brick>();  // Assure-toi que cette ligne est correcte.
 
-                    // Décider aléatoirement si la brique est spéciale (bonus/malus)
-                    if (Random.value > 0.9f)  // Plus rare que les briques normales
+                    // Décider aléatoirement si la brique est spéciale (bonus/malus) ou Bedrock
+                    float chance = Random.value;
+                    if (chance > 0.95) // Chance pour Bedrocks
+                    {
+                        brickComponent.brickType = Brick.BrickType.Bedrock;
+                        brickComponent.SetResistance(1); // Bedrocks peuvent être représentées avec une résistance arbitraire
+                    }
+                    else if (chance > 0.9f)  // Chance pour bonus ou malus
                     {
                         brickComponent.brickType = Random.value > 0.5f ? Brick.BrickType.Bonus : Brick.BrickType.Malus;
                         brickComponent.effect = brickComponent.ChooseEffect(brickComponent.brickType);
-                        brickComponent.SetResistance(1); // Forcer la résistance à 1 pour les briques bonus
-                        brickComponent.UpdateMaterial(); // Assure que le matériau est mis à jour immédiatement.
+                        brickComponent.SetResistance(1);
                     }
                     else
                     {
-                        // Assignation aléatoire d'un niveau de résistance à chaque brique normale ou malus.
+                        brickComponent.brickType = Brick.BrickType.Normal;
                         int resistanceLevel = Random.Range(1, 4);
                         brickComponent.SetResistance(resistanceLevel);
                     }
 
-                    bricksCount++; // Incrémentation du compteur de briques.
+                    brickComponent.UpdateMaterial(); // Assure que le matériau est mis à jour immédiatement.
+
+                    // Incrémentation du compteur de briques uniquement pour les briques non Bedrocks.
+                    if (brickComponent.brickType != Brick.BrickType.Bedrock)
+                    {
+                        bricksCount++;
+                    }
                 }
             }
         }

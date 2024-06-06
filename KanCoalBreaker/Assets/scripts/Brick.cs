@@ -8,7 +8,8 @@ public class Brick : MonoBehaviour
     public Material[] resistanceMaterials; // Matériaux pour chaque niveau de résistance
     public Material bonusMaterial; 
     public Material malusMaterial; 
-    public enum BrickType { Normal, Bonus, Malus }
+    public Material BedrockMaterial;
+    public enum BrickType { Normal, Bonus, Malus,Bedrock }
     public BrickType brickType; // Type de la brique (Normal, Bonus, Malus)
     public string effect;       // L'effet à appliquer si la brique est un bonus ou un malus
     public int resistance;      // Niveau de résistance actuel de la brique
@@ -17,8 +18,8 @@ public class Brick : MonoBehaviour
 
     private static Dictionary<BrickType, List<string>> possibleEffects = new Dictionary<BrickType, List<string>>()
     {
-        { BrickType.Bonus, new List<string> { "SlowDown", "EnlargePaddle", "ExtraPoints" } },
-        { BrickType.Malus, new List<string> { "SpeedUp", "ShrinkPaddle", "ReducePoints" } }
+        { BrickType.Bonus, new List<string> { "SpeedUp", "EnlargePaddle", "ExtraPoints","barSpeedUp" } },
+        { BrickType.Malus, new List<string> { "SlowDown", "ShrinkPaddle", "ReducePoints","BarSpeedDown" } }
     };
 
     public void SetResistance(int level)
@@ -41,6 +42,10 @@ public class Brick : MonoBehaviour
         {
             renderer.material = malusMaterial; // Utiliser le matériau malus pour les briques de type malus
         }
+        else if (brickType == BrickType.Bedrock)
+        {
+            renderer.material = BedrockMaterial; // Utiliser le matériau de résistance la plus basse pour les briques de type Bedrock
+        }
         else if (resistanceMaterials != null && resistance > 0 && resistance - 1 < resistanceMaterials.Length)
         {
             renderer.material = resistanceMaterials[resistance - 1]; // Sélectionner le matériau basé sur la résistance
@@ -56,9 +61,12 @@ public class Brick : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball"))  // Vérifier si l'objet en collision est la balle
         {
+            if (brickType == BrickType.Bedrock)
+            {
+                return; // Ne rien faire si la brique est de type Bedrock
+            }
             resistance--;
        
-            Debug.Log(resistance);
             if (resistance <= 0)
             {
                 ApplyEffects();  // Appliquer les effets avant de détruire la brique
@@ -74,7 +82,7 @@ public class Brick : MonoBehaviour
     {
         if (brickType != BrickType.Normal && !string.IsNullOrEmpty(effect))
         {
-            GameManager.Instance.ApplyEffect(effect); // gére l'affichage du bonus
+            GameManager.Instance.ApplyEffect(effect,brickType); // gére l'affichage du bonus
             switch (effect)
             {
                 case "SpeedUp":
@@ -94,6 +102,12 @@ public class Brick : MonoBehaviour
                     break;
                 case "ReducePoints":
                     GameManager.Instance.AddScore(-250);
+                    break;
+                case "barSpeedUp":
+                    FindObjectOfType<Bar>().speedUp();
+                    break;
+                case "BarSpeedDown":
+                    FindObjectOfType<Bar>().slowDown();
                     break;
             }
         }

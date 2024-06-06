@@ -2,7 +2,9 @@ using UnityEngine;
 
 // Contrôle le comportement de la bille dans le jeu, y compris le lancement et les collisions.
 public class BallController : MonoBehaviour
+
 {
+    public GameManager gameManager; // Référence au GameManager pour accéder à ses fonctions.
     private Rigidbody rb;  // Composant Rigidbody de la bille pour gérer la physique.
     public GameObject plateau; // Plateau avec lequel la bille peut interagir sans rebondir.
 
@@ -10,6 +12,7 @@ public class BallController : MonoBehaviour
     public float angleVariance = 0.5f; // Variance de l'angle de rebond après une collision, pour ajouter de l'aléatoire.
     public float speed = 10f; // Vitesse constante de la bille.
 
+    private Vector3 initialPosition;  // Ajout pour garder en mémoire la position initiale de la balle.
     private bool isLaunched = false; // État de lancement de la bille, pour éviter des redémarrages intempestifs.
 
     // Initialisation du composant Rigidbody et configuration initiale de la bille.
@@ -18,6 +21,8 @@ public class BallController : MonoBehaviour
         rb = GetComponent<Rigidbody>(); // Récupère le composant Rigidbody attaché à cet objet.
         rb.useGravity = false; // Désactive la gravité pour la bille.
         gameObject.tag = "Ball"; // Assigne le tag "Ball" à l'objet pour identification facile dans d'autres scripts.
+        initialPosition = transform.position;  // Enregistrement de la position initiale.
+
     }
 
     // Gère l'entrée de l'utilisateur pour lancer la bille.
@@ -26,6 +31,9 @@ public class BallController : MonoBehaviour
         if(!isLaunched){ // Vérifie si la bille n'est pas déjà lancée.
             if (Input.GetKeyDown(KeyCode.Space)) // Écoute la touche espace pour lancer la bille.
             {
+                if(!gameManager.getGameActive()) // Vérifie si le jeu est en cours pour lancer la bille.
+                    gameManager.SetGameActive(true); // Démarre le jeu si ce n'est pas déjà le cas.
+                GameManager.Instance.HideStartInstruction();  // Cache le texte d'instruction lors du lancement de la balle
                 isLaunched = true; // Marque la bille comme lancée.
                 rb.velocity = -Vector3.forward * speed; // Propulse la bille en avant à la vitesse définie.
             }
@@ -60,7 +68,10 @@ public class BallController : MonoBehaviour
     // Réinitialise la position de la bille et arrête son mouvement.
     public void ResetBall()
     {
-        StopBall(); // Assure que la bille est arrêtée avant de réinitialiser.
+        StopBall();
+        Debug.Log("Initial pos :" + initialPosition);
+        transform.position = initialPosition;  // Réinitialise la position de la balle.
+        isLaunched = false;  // Permet de relancer la balle.
     }
 
     // Arrête le mouvement de la bille en réglant sa vitesse à zéro.

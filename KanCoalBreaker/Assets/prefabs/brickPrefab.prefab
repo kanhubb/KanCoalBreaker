@@ -124,6 +124,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: b248dd262ae911d4d8d6a22ab0659242, type: 2}
   bonusMaterial: {fileID: 2100000, guid: 28d111aeadb08b14783694a866c47962, type: 2}
   malusMaterial: {fileID: 2100000, guid: 365eb75086f28714fbb5b37ddd3b63f5, type: 2}
+  BedrockMaterial: {fileID: 2100000, guid: 1b2f4ae3dc4689d4fa23bff6a11967f6, type: 2}
   brickType: 0
   effect: 
   resistance: 0

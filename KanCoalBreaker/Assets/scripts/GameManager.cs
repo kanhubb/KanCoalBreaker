@@ -1,16 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;  
 
 using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI timerText;
-
-    public TextMeshProUGUI BonusText;
-
+    public TextMeshProUGUI BonusText,startInstructionText,timerText,scoreText;
     public GameObject ball;
     public SaveScore saveScoreScript; 
     public GenerateBrickPattern brickPatternGenerator;
@@ -53,7 +50,7 @@ public class GameManager : MonoBehaviour
         if (gameTimer > 0)
         {
             gameTimer -= Time.deltaTime;
-            timerText.text = "Time: " + gameTimer.ToString("F2");
+            timerText.text =  gameTimer.ToString("F2");
         }
         else
         {
@@ -63,8 +60,15 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     { 
-        gameActive = true;
         brickPatternGenerator.GenerateBricks();
+    }
+    public void SetGameActive(bool active)
+    {
+        gameActive = active;
+    }
+    public bool getGameActive()
+    {
+        return gameActive;
     }
 
     public void Win()
@@ -80,7 +84,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Game Over!");
         gameActive = false;
-        ballController.StopBall();
+        ballController.ResetBall();
         BonusText.gameObject.SetActive(false);
         saveScoreScript.ActivateEndGamePanel(false);
     }
@@ -93,23 +97,37 @@ public class GameManager : MonoBehaviour
     public void AddScore(int points)
     {
         score += points;
-        Debug.Log("Tital Bricks" + totalBricks);
         if(totalBricks == 0){
-
+            startInstructionText.gameObject.SetActive(true);
+            ballController.ResetBall();
             brickPatternGenerator.GenerateBricks();
         }
         UpdateScoreText();
     }
-        public void ApplyEffect(string effect)
+    public void ApplyEffect(string effect, Brick.BrickType type)
     {
         if (BonusText != null)
         {
-            BonusText.text = $"Effect Applied: {effect}";
+            BonusText.text = effect;
+
+            // Détermine la couleur du texte en fonction du type de la brique
+            switch (type)
+            {
+                case Brick.BrickType.Bonus:
+                    BonusText.color = Color.green;  // Vert pour les bonus
+                    break;
+                case Brick.BrickType.Malus:
+                    BonusText.color = Color.red;    // Rouge pour les malus
+                    break;
+                default:
+                    BonusText.color = Color.white;  // Blanc pour les types normaux ou non spécifiés
+                    break;
+            }
+
             BonusText.gameObject.SetActive(true);
-            StartCoroutine(HideEffectDisplayAfterTime(2)); // Démarrer la coroutine ici
+            StartCoroutine(HideEffectDisplayAfterTime(2));
         }
     }
-
     IEnumerator HideEffectDisplayAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
@@ -123,7 +141,7 @@ public class GameManager : MonoBehaviour
     {
         if (scoreText != null)
         {
-            scoreText.text = "Score: " + score;
+            scoreText.text = ""+score;
         }
         else
         {
@@ -133,11 +151,18 @@ public class GameManager : MonoBehaviour
 
     public void SetTotalBricks(int count)
     {
-        Debug.Log("Total bricks: " + count);
         totalBricks = count;
         if (totalBricks == 0 && gameActive)
         {
             brickPatternGenerator.GenerateBricks();
         }
     }
+    public void HideStartInstruction()
+{
+    if (startInstructionText.gameObject.activeSelf)
+    {
+        startInstructionText.gameObject.SetActive(false);
+    }
+}
+
 }
