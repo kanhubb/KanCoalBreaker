@@ -83,7 +83,7 @@ public class Brick : MonoBehaviour
         if (brickType != BrickType.Normal && !string.IsNullOrEmpty(effect))
         {
             GameManager.Instance.ApplyEffect(effect,brickType); // gére l'affichage du bonus
-            switch (effect)
+            switch (effect) // Appliquer l'effet correspondant
             {
                 case "SpeedUp":
                     FindObjectOfType<BallController>().IncreaseSpeed();

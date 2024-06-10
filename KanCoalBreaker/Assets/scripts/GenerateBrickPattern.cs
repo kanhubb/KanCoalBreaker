@@ -52,7 +52,7 @@ public class GenerateBrickPattern : MonoBehaviour
                         brickComponent.brickType = Brick.BrickType.Bedrock;
                         brickComponent.SetResistance(1); // Bedrocks peuvent être représentées avec une résistance arbitraire
                     }
-                    else if (chance > 0.9f)  // Chance pour bonus ou malus
+                    else if (chance > 0.82f)  // Chance pour bonus ou malus
                     {
                         brickComponent.brickType = Random.value > 0.5f ? Brick.BrickType.Bonus : Brick.BrickType.Malus;
                         brickComponent.effect = brickComponent.ChooseEffect(brickComponent.brickType);

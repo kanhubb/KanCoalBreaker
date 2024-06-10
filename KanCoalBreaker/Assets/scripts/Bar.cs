@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bar : MonoBehaviour
 {
-    public float speed = 10.0f; // Vitesse de déplacement de la barre
+    public float speed = 15.0f; // Vitesse de déplacement de la barre
 
     // Update is called once per frame
     void Update()
@@ -44,19 +44,24 @@ public class Bar : MonoBehaviour
     }
     public void EnlargePaddle()
     {
+        // Agrandir la barre
         transform.localScale = new Vector3(transform.localScale.x , transform.localScale.y* 1.5f, transform.localScale.z);
     }
 
     public void ShrinkPaddle()
     {
+        // Rétrécir la barre
         transform.localScale = new Vector3(transform.localScale.x , transform.localScale.y* 0.5f, transform.localScale.z);
     }
     public void speedUp()
     {
+        // Augmenter la vitesse de la barre
         speed = speed * 1.5f;
     }
     public void slowDown()
     {
+
+        // Réduire la vitesse de la barre
         speed = speed * 0.8f;
     }
 

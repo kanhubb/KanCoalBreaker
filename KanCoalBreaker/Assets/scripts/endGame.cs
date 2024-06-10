@@ -29,7 +29,7 @@ public class SaveScore : MonoBehaviour
     public void SaveScoreToFile()
     {
         string playerName = string.IsNullOrWhiteSpace(playerNameInput.text) ? "Anonymous" : playerNameInput.text;
-        int score = GameManager.Instance.GetScore();
+        int score = GameManager.Instance.GetScore(); // Récupérer le score actuel du GameManager
         string newScoreEntry = $"{playerName},{score}\n";
         AppendScoreToFile(newScoreEntry);
         PostSaveActions();
@@ -39,7 +39,7 @@ public class SaveScore : MonoBehaviour
     {
         string path = Path.Combine(Application.persistentDataPath, ScoreFilePath);
         Debug.Log($"Saving score to {path}");
-        File.AppendAllText(path, newScoreEntry);
+        File.AppendAllText(path, newScoreEntry);// Ajouter la nouvelle entrée de score à la fin du fichier
     }
 
     private void PostSaveActions()
